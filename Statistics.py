@@ -66,10 +66,12 @@ class Statistics:
 
     @property
     def unknown(self):
-        max_attempts_count = max(len(attempts) for attempts in self.games)
-        return len([len(attempts)
-                    for attempts in self.games
-                    if len(attempts) == max_attempts_count])
+        if len(self.games) and len(self.games[0]):
+            max_attempts_count = max(len(attempts) for attempts in self.games)
+            return len([len(attempts)
+                        for attempts in self.games
+                        if len(attempts) == max_attempts_count])
+        return 0
 
     @property
     def max_attempts(self):
@@ -83,7 +85,9 @@ class Statistics:
                 attempts.pop()
 
     def __getitem__(self, index):
-        return self.games[index]
+        if len(self.games) > index:
+            return self.games[index]
+        return []
 
     def __str__(self):
         return f'Statistics for "{self.name}": ' \
